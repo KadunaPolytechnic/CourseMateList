@@ -153,137 +153,258 @@
     });
   </script>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
+  /* Reset and base */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+  body {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    min-height: 100vh;
+    padding: 40px 20px;
+    color: #222;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  /* Hide non-active sections */
+  .home, .view, .form, .team {
+    display: none;
+  }
+  .active {
+    display: block;
+    animation: fadeInUp 0.6s ease forwards;
+  }
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Home Section */
+  .home {
+    max-width: 400px;
+    text-align: center;
+    background: rgba(255 255 255 / 0.15);
+    padding: 40px 30px;
+    border-radius: 30px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    color: #fff;
+  }
+  .home h1 {
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 40px;
+    text-shadow: 0 3px 6px rgba(0,0,0,0.3);
+  }
+
+  /* Button Group */
+  .button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .button-group button {
+    padding: 18px 0;
+    font-size: 1.1rem;
+    background: #0077cc;
+    border: none;
+    border-radius: 18px;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(0, 119, 204, 0.5);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .button-group button:hover {
+    background: #005fa3;
+    box-shadow: 0 8px 20px rgba(0, 95, 163, 0.7);
+  }
+  .button-group button:focus-visible {
+    outline: 3px solid #00f2fe;
+    outline-offset: 2px;
+  }
+
+  /* Container for views */
+  .container {
+    max-width: 720px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 35px 40px;
+    border-radius: 28px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+  }
+  h2 {
+    text-align: center;
+    color: #0077cc;
+    margin-bottom: 30px;
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+
+  /* Student Card */
+  .student-card {
+    display: flex;
+    align-items: center;
+    background: #f9faff;
+    padding: 18px 22px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    margin-bottom: 22px;
+    transition: box-shadow 0.3s ease;
+  }
+  .student-card:hover {
+    box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+  }
+  .student-card img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 25px;
+    border: 3.5px solid #0077cc;
+    box-shadow: 0 3px 10px rgba(0,119,204,0.3);
+    flex-shrink: 0;
+  }
+  .details p {
+    margin: 6px 0;
+    color: #444;
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+
+  /* Form styling */
+  form label {
+    display: block;
+    margin-top: 18px;
+    margin-bottom: 7px;
+    font-weight: 600;
+    color: #333;
+    font-size: 1rem;
+  }
+  form input, form select {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1.5px solid #ccc;
+    border-radius: 15px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  form input:focus, form select:focus {
+    border-color: #0077cc;
+    outline: none;
+    box-shadow: 0 0 8px rgba(0,119,204,0.3);
+  }
+  form button {
+    margin-top: 30px;
+    width: 100%;
+    padding: 16px 0;
+    background: #0077cc;
+    color: #fff;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0,119,204,0.5);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  form button:hover {
+    background: #005fa3;
+    box-shadow: 0 8px 24px rgba(0,95,163,0.7);
+  }
+
+  /* Back button */
+  .back-btn {
+    display: inline-block;
+    margin-top: 25px;
+    background: #ddd;
+    color: #555;
+    padding: 12px 26px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.07);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .back-btn:hover {
+    background: #bbb;
+  }
+
+  /* Loading Indicator */
+  #loadingIndicator p {
+    font-style: italic;
+    font-size: 1rem;
+    color: #555;
+  }
+
+  /* Responsive adjustments */
+  @media screen and (max-width: 600px) {
     body {
-      background: linear-gradient(to right, #4facfe, #00f2fe);
-      min-height: 100vh;
-      padding: 40px 20px;
-      color: #333;
+      padding: 30px 15px;
     }
-    .home, .view, .form, .team {
-      display: none;
-    }
-    .active {
-      display: block;
-      animation: fadeIn 0.5s ease;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .home { text-align: center; }
-    .home h1 {
-      font-size: 2em;
-      margin-bottom: 30px;
-      color: #fff;
-    }
-    .button-group {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      max-width: 300px;
-      margin: auto;
+    .home {
+      padding: 30px 25px;
+      max-width: 100%;
     }
     .button-group button {
-      padding: 15px;
-      font-size: 16px;
-      background: #0077cc;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .button-group button:hover {
-      background: #005fa3;
+      font-size: 1rem;
+      padding: 14px 0;
     }
     .container {
-      max-width: 700px;
-      margin: auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
-    h2 {
-      text-align: center;
-      color: #0077cc;
-      margin-bottom: 25px;
+      padding: 30px 25px;
+      margin: 15px auto;
+      width: 100%;
     }
     .student-card {
-      display: flex;
+      flex-direction: column;
       align-items: center;
-      margin-bottom: 20px;
-      padding: 15px;
-      background: #fff;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      padding: 18px 15px;
     }
     .student-card img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-right: 20px;
-      border: 3px solid #0077cc;
+      margin-bottom: 15px;
+      margin-right: 0;
     }
     .details p {
-      margin: 4px 0;
-      color: #333;
+      font-size: 0.95rem;
     }
-    form label {
-      display: block;
-      margin-top: 15px;
-      margin-bottom: 5px;
-      font-weight: 500;
-    }
-    form input, form select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-    }
-    form button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 14px;
-      background: #0077cc;
-      color: white;
-      border: none;
-      font-size: 16px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    form button:hover {
-      background: #005fa3;
-    }
-    .back-btn {
-      display: inline-block;
-      margin-top: 20px;
-      background: #ccc;
-      color: #333;
-      padding: 10px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    @media screen and (max-width: 600px) {
-      .student-card {
-        flex-direction: column;
-        align-items: flex-start;
-        text-align: left;
-      }
-      .student-card img {
-        margin-bottom: 10px;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
   <div class="home active" id="home">
