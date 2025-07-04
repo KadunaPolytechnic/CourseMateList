@@ -61,15 +61,21 @@
           shuffle(students).forEach(st => {
             const card = document.createElement('div');
             card.className = 'student-card';
+            
+            
             card.innerHTML = `
-              <img src="${st.photo}" alt="${st.fullName}">
-              <div class="details">
-                <p><strong>Name:</strong> ${st.fullName}</p>
-                <p><strong>Reg No:</strong> ${st.regNo}</p>
-                <p><strong>Phone:</strong> ${st.phone}</p>
-                <p><strong>Gender:</strong> ${st.gender}</p>
-              </div>
-            `;
+  <img src="${st.photo}" alt="${st.fullName}">
+  <div class="details">
+    <p><strong>Name:</strong> ${st.fullName}</p>
+    <p><strong>Reg No:</strong> ${st.regNo}</p>
+    <p><strong>Phone:</strong> ${st.phone}</p>
+    <p><strong>Gender:</strong> ${st.gender}</p>
+    ${st.state ? `<p><strong>State:</strong> ${st.state}</p>` : ''}
+    ${st.localGovernment ? `<p><strong>LGA:</strong> ${st.localGovernment}</p>` : ''}
+    ${st.town ? `<p><strong>Town:</strong> ${st.town}</p>` : ''}
+    ${st.address ? `<p><strong>Address:</strong> ${st.address}</p>` : ''}
+  </div>
+`;
             container.appendChild(card);
           });
         }
@@ -132,12 +138,16 @@
           }
 
           const student = {
-            fullName: name,
-            regNo: reg,
-            phone,
-            gender,
-            photo: reader.result
-          };
+  fullName: name,
+  regNo: reg,
+  phone,
+  gender,
+  state: document.getElementById('state').value.trim(),
+  lga: document.getElementById('lga').value.trim(),
+  town: document.getElementById('town').value.trim(),
+  address: document.getElementById('address').value.trim(),
+  photo: reader.result
+};
 
           set(ref(db, 'classmates/' + reg), student)
             .then(() => {
@@ -151,6 +161,73 @@
         reader.readAsDataURL(photo);
       });
     });
+    
+    
+    
+    
+    
+    window.updateStudent = async function () {
+  const name = document.getElementById('name').value.trim();
+  const reg = document.getElementById('reg').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const gender = document.getElementById('gender').value;
+  const state = document.getElementById('state').value.trim();
+  const lga = document.getElementById('lga').value.trim();
+  const town = document.getElementById('town').value.trim();
+  const address = document.getElementById('address').value.trim();
+  const photoInput = document.getElementById('photo');
+
+  if (!reg) return alert("Reg No is required to update.");
+
+  const dbRef = ref(db, 'classmates');
+  const snapshot = await get(dbRef);
+  const data = snapshot.val();
+
+  if (!data || !data[reg]) {
+    alert("No record found for that Reg No.");
+    return;
+  }
+
+  const student = {
+    fullName: name,
+    regNo: reg,
+    phone,
+    gender,
+    state,
+    lga,
+    town,
+    address,
+    photo: data[reg].photo // keep old photo
+  };
+
+  // If a new photo is selected, read and update it
+  if (photoInput.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function () {
+      student.photo = reader.result;
+      set(ref(db, 'classmates/' + reg), student)
+        .then(() => {
+          alert("Update successful!");
+          document.getElementById('studentForm').reset();
+          renderClassmates();
+          showPage('classmates');
+        })
+        .catch(err => alert("Update error: " + err));
+    };
+    reader.readAsDataURL(photoInput.files[0]);
+  } else {
+    // No new photo
+    set(ref(db, 'classmates/' + reg), student)
+      .then(() => {
+        alert("Update successful!");
+        document.getElementById('studentForm').reset();
+        renderClassmates();
+        showPage('classmates');
+      })
+      .catch(err => alert("Update error: " + err));
+  }
+};
+    
   </script>
 
 
@@ -444,10 +521,24 @@
         <option>Female</option>
       </select>
 
+<label for="state">State</label>
+<input type="text" id="state" required>
+
+<label for="lga">Local Government Area</label>
+<input type="text" id="lga" required>
+
+<label for="town">Town</label>
+<input type="text" id="town" required>
+
+<label for="address">Residential Address</label>
+<input type="text" id="address" required>
+
       <label for="photo">Passport Photograph</label>
       <input type="file" id="photo" accept="image/*" required>
 
       <button type="submit">Register</button>
+      
+      <button type="button" onclick="updateStudent()">🔁 Update</button>
     </form>
     <a class="back-btn" onclick="goHome()">← Back</a>
   </div>
